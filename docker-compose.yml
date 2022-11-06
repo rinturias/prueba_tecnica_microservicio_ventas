@@ -1,0 +1,37 @@
+services:
+ sql-server-db:
+        container_name: sql-server-db
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+         - "1433:1433"
+         
+        environment:
+             SA_PASSWORD: "Microservicio2022"
+             ACCEPT_EULA: "Y"
+        volumes:
+         - ~/apps/mssql/data:/var/lib/mssqlql/data
+        networks:
+         - microservicio_network
+ microservicio_vuelos_com:
+        container_name: microservicio_vuelos_com
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "5005:5000"    
+        depends_on:
+            -  sql-server-db  
+        networks:
+            - microservicio_network
+ rabbitmq:
+        image: rabbitmq:3.11.0-rc.1-management
+        container_name: rabbitmq-service
+        ports:
+            - 5672:5672
+            - 15672:15672 
+        networks:
+            - microservicio_network               
+networks:
+    microservicio_network:
+        name: microservice_net
+        driver: bridge      
