@@ -75,10 +75,14 @@ namespace System.Sales.Domain.Models.sale
 
 
             this.amountNominal += (detaelProduct.price *detaelProduct.quantity);
-            var cobroConDescuento = ((this.amountTotal.Value * discount) / 100);
+
+            var cobroConDescuento = ((this.amountNominal.Value * discount) / 100);
+
             var cobroIva= ((amountNominal.Value * this.iva) /100);
-            var Totaldescuento = cobroConDescuento; ;
-            this.amountTotal += (amountNominal +cobroIva)-Totaldescuento;
+
+            var Totaldescuento = cobroConDescuento; 
+
+            this.amountTotal = (amountNominal +cobroIva)-Totaldescuento;
         }
 
         public void consolidateSale()
